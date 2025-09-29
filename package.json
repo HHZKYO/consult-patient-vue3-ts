@@ -14,7 +14,13 @@
     "type-check": "vue-tsc --build",
     "lint": "eslint . --fix",
     "format": "prettier --write src/",
-    "prepare": "husky"
+    "prepare": "husky",
+    "lint-staged": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,ts,vue}": [
+      "eslint --fix"
+    ]
   },
   "dependencies": {
     "pinia": "^3.0.3",
@@ -32,6 +38,7 @@
     "eslint-plugin-vue": "~10.3.0",
     "husky": "^9.1.7",
     "jiti": "^2.4.2",
+    "lint-staged": "^16.2.3",
     "npm-run-all2": "^8.0.4",
     "prettier": "3.6.2",
     "typescript": "~5.8.0",
