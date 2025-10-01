@@ -6,7 +6,7 @@
   <div>
     app
     <!-- <Button type="primary">按钮</Button> -->
-    <van-button>按钮</van-button>
+    <van-button type="primary">按钮</van-button>
   </div>
 </template>
 
