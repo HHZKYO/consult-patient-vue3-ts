@@ -1,24 +1,29 @@
 <script setup lang="ts">
 // import { Button } from 'vant'
 import { useUserStore } from './stores'
-import axios from './utils/request'
+import { request } from './utils/request'
 
 const getMessage = () => {
-  axios.request({
-    url: '/patient/myUser',
-    method: 'get'
-  })
+  // axios.request({
+  //   url: '/patient/myUser',
+  //   method: 'get'
+  // })
+  request('/patient/myUser', 'get', { test: 1 })
 }
 const login = () => {
-  axios
-    .request({
-      url: '/login/password',
-      method: 'post',
-      data: {
-        mobile: '13212345678',
-        password: 'abc123456'
-      }
-    })
+  // axios
+  // .request({
+  //   url: '/login/password',
+  //   method: 'post',
+  //   data: {
+  //     mobile: '13212345678',
+  //     password: 'abc123456'
+  //   }
+  // })
+  request('/login/password', 'post', {
+    mobile: '13212345678',
+    password: 'abc12345'
+  })
     .then((res) => {
       console.log('成功', res)
     })
