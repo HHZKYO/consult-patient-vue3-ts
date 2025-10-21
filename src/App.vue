@@ -1,7 +1,14 @@
 <script setup lang="ts">
 // import { Button } from 'vant'
 import { useUserStore } from './stores'
+import axios from './utils/request'
 
+const getMessage = () => {
+  axios.request({
+    url: '/patient/myUser',
+    method: 'get'
+  })
+}
 const store = useUserStore()
 </script>
 
@@ -23,6 +30,7 @@ const store = useUserStore()
       >设置</van-button
     >
     <van-button type="primary" @click="store.delUser()">删除</van-button>
+    <van-button @click="getMessage()">获取用户信息</van-button>
   </div>
 </template>
 
