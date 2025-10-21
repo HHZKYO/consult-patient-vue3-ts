@@ -9,6 +9,23 @@ const getMessage = () => {
     method: 'get'
   })
 }
+const login = () => {
+  axios
+    .request({
+      url: '/login/password',
+      method: 'post',
+      data: {
+        mobile: '13212345678',
+        password: 'abc123456'
+      }
+    })
+    .then((res) => {
+      console.log('成功', res)
+    })
+    .catch((err) => {
+      console.log('失败', err)
+    })
+}
 const store = useUserStore()
 </script>
 
@@ -31,6 +48,7 @@ const store = useUserStore()
     >
     <van-button type="primary" @click="store.delUser()">删除</van-button>
     <van-button @click="getMessage()">获取用户信息</van-button>
+    <van-button @click="login()">用户登录</van-button>
   </div>
 </template>
 

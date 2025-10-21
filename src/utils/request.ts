@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { useUserStore } from '@/stores'
+import { showToast } from 'vant'
 
 const instance = axios.create({
   // 1. 基础地址，超时时间
@@ -21,9 +22,15 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
   (res) => {
-    // TODO 3. 处理业务失败
+    // 处理业务失败
+    if (res.data.code !== 10000) {
+      // 给出错误提示
+      showToast(res.data.message || '业务失败')
+      // 返回 错误的 Promise
+      return Promise.reject(res.data)
+    }
     // TODO 4. 摘取核心响应数据
-    return res
+    return res.data
   },
   (err) => {
     // TODO 5. 处理401错误
