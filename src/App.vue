@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // import { Button } from 'vant'
 import { useUserStore } from './stores'
+import type { User } from './types/user'
 import { request } from './utils/request'
 
 const getMessage = () => {
@@ -20,7 +21,7 @@ const login = () => {
   //     password: 'abc123456'
   //   }
   // })
-  request('/login/password', 'post', {
+  request<User>('/login/password', 'post', {
     mobile: '13212345678',
     password: 'abc12345'
   })
