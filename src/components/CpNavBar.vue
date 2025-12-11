@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router';
+
+// import router from '@/router';
+
   defineProps<{
     title?: string
     rightText?: string
@@ -9,12 +13,23 @@
     (e: 'click-right'): void
   }>()
 
+  // 点击右按钮
   const onClickRight = () => {
     emit('click-right')
   }
+
+  // 点击左箭头
+  const router = useRouter()
+  const onClickLeft = () => {
+    if(history.state?.back) {
+      router.back()
+    } else {
+      router.push('/')
+    }
+  }
 </script>
 <template>
-  <van-nav-bar @click-right="onClickRight" fixed :title="title" left-arrow :right-text="rightText" />
+  <van-nav-bar @click-left="onClickLeft" @click-right="onClickRight" fixed :title="title" left-arrow :right-text="rightText" />
 </template>
 <style lang="scss" scoped>
   :deep() {
