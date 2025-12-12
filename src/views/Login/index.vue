@@ -1,29 +1,29 @@
 <script setup lang="ts">
-  import { ref } from 'vue';
-  import { mobileRules, passwordRules } from '@/utils/rule';
+import { ref } from 'vue';
+import { mobileRules, passwordRules } from '@/utils/rule';
 import { showSuccessToast, showToast } from 'vant';
 import { loginByPassword } from '@/services/user';
 import { useUserStore } from '@/stores';
 import { useRoute, useRouter } from 'vue-router';
 
-  const mobile = ref('13230000009')
-  const password = ref('abc12345')
-  const agree = ref(false)
-  const store = useUserStore()
-  const router = useRouter()
-  const route = useRoute()
+const mobile = ref('13230000009')
+const password = ref('abc12345')
+const agree = ref(false)
+const store = useUserStore()
+const router = useRouter()
+const route = useRoute()
 
-  const onSubmit = async () => {
-    if(!agree.value) {
-      showToast('请先同意用户协议')
-      return
-    } else {
-      const res = await loginByPassword(mobile.value, password.value)
-      store.setUser(res.data)
-      showSuccessToast('登录成功')
-      router.replace((route.query.returnUrl as string) || '/user')
-    }
+const onSubmit = async () => {
+  if(!agree.value) {
+    showToast('请先同意用户协议')
+    return
+  } else {
+    const res = await loginByPassword(mobile.value, password.value)
+    store.setUser(res.data)
+    showSuccessToast('登录成功')
+    router.replace((route.query.returnUrl as string) || '/user')
   }
+}
 </script>
 
 <template>
