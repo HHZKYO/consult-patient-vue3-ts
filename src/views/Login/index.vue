@@ -111,6 +111,11 @@ onUnmounted(() => {
         <a href="javascript:;">忘记密码？</a>
       </div>
     </van-form>
+    <!-- 测试代码 -->
+    <svg aria-hidden="true">
+      <!-- #icon-文件夹名称-图片名称 -->
+      <use href="#icon-login-eye-off" />
+    </svg>
     <!-- 底部 -->
     <div class="login-other">
       <van-divider>第三方登录</van-divider>
