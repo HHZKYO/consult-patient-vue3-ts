@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onUnmounted, ref } from 'vue';
 import { mobileRules, passwordRules, codeRules } from '@/utils/rule';
-import { showSuccessToast, showToast } from 'vant';
-import { loginByPassword } from '@/services/user';
+import { showSuccessToast, showToast, type FormInstance } from 'vant';
+import { loginByPassword, sendMobileCode } from '@/services/user';
 import { useUserStore } from '@/stores';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -28,6 +28,29 @@ const onSubmit = async () => {
 // 短信登录界面切换
 const isPassword = ref(true)
 const code = ref('')
+
+// 发送验证码
+const time = ref(0)
+const form = ref<FormInstance>()
+let timer: number
+const onSend = async () => {
+  // 首先需要验证倒计时和手机号
+  if(time.value > 0) return
+  await form.value?.validate('mobile')
+  await sendMobileCode(mobile.value, 'login')
+  showToast('发送成功')
+  time.value = 60
+  // 开启倒计时
+  if(timer) clearInterval(timer)
+  timer = setInterval(() => {
+    time.value --
+    if(time.value <= 0) clearInterval(timer)
+  }, 1000)
+}
+
+onUnmounted(() => {
+  clearInterval(timer)
+})
 </script>
 
 <template>
@@ -45,12 +68,29 @@ const code = ref('')
       </a>
     </div>
     <!-- 表单 -->
-    <van-form autocomplete="off" @submit="onSubmit">
-      <van-field v-model="mobile" :rules="mobileRules" placeholder="请输入手机号" type="tel"></van-field>
-      <van-field v-if="isPassword" v-model="password" :rules="passwordRules" placeholder="请输入密码" type="password"></van-field>
-      <van-field v-else v-model="code" :rules="codeRules" placeholder="请输入验证码">
+    <van-form autocomplete="off" @submit="onSubmit" ref="form">
+      <van-field
+        v-model="mobile"
+        name="mobile"
+        :rules="mobileRules"
+        placeholder="请输入手机号"
+        type="tel"></van-field>
+      <van-field
+        v-if="isPassword"
+        v-model="password"
+        :rules="passwordRules"
+        placeholder="请输入密码"
+        type="password"></van-field>
+      <van-field v-else
+        v-model="code"
+        :rules="codeRules"
+        placeholder="请输入验证码">
         <template #button>
-          <span class="btn-send">发送验证码</span>
+          <span
+            @click="onSend"
+            :class="{ active: time > 0 }"
+            class="btn-send"
+          >{{ time>0?`${time}s后再次发送`:'发送验证码' }}</span>
         </template>
       </van-field>
       <div class="cp-cell">
