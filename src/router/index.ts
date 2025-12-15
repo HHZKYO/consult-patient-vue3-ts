@@ -1,3 +1,4 @@
+import { useUserStore } from '@/stores'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -31,6 +32,13 @@ const router = createRouter({
       ]
     }
   ]
+})
+
+// 设置全局前置守卫
+router.beforeEach((to) => {
+  const store = useUserStore()
+  const whiteList = ['/login']
+  if (!store.user?.token && !whiteList.includes(to.path)) return '/login'
 })
 
 export default router
