@@ -116,6 +116,7 @@ onUnmounted(() => {
       <!-- #icon-文件夹名称-图片名称 -->
       <use href="#icon-login-eye-off" />
     </svg>
+    <cp-icon name="login-eye-off"></cp-icon>
     <!-- 底部 -->
     <div class="login-other">
       <van-divider>第三方登录</van-divider>
