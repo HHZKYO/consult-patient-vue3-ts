@@ -1,17 +1,17 @@
 <script setup lang="ts">
-  import { getUserInfo } from '@/services/user';
-  import { useUserStore } from '@/stores';
-  import type { UserInfo } from '@/types/user';
-  import { showConfirmDialog } from 'vant';
-  import { onMounted, ref } from 'vue';
-  import { useRouter } from 'vue-router';
-  const user = ref<UserInfo>()
-  onMounted(async () => {
-    user.value = (await getUserInfo()).data
-  })
+import { getUserInfo } from '@/services/user';
+import { useUserStore } from '@/stores';
+import type { UserInfo } from '@/types/user';
+import { showConfirmDialog } from 'vant';
+import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
+const user = ref<UserInfo>()
+onMounted(async () => {
+  user.value = (await getUserInfo()).data
+})
 
-  // 初始化快捷工具
-  const tools = [
+// 初始化快捷工具
+const tools = [
   { label: '我的问诊', path: '/user/consult' },
   { label: '我的处方', path: '/' },
   { label: '家庭档案', path: '/user/patient' },
@@ -21,21 +21,21 @@
   { label: '设置', path: '/' }
 ]
 
-  // 退出登录
-  const store = useUserStore()
-  const router = useRouter()
-  const onLogout = () => {
-    showConfirmDialog({
-      title: '温馨提示',
-      message:
-        '是否确认退出登录',
-    }).then(() => {
-      store.delUser()
-      router.push('/login')
-    }).catch(() => {
-      return
-    })
-  }
+// 退出登录
+const store = useUserStore()
+const router = useRouter()
+const onLogout = () => {
+  showConfirmDialog({
+    title: '温馨提示',
+    message:
+      '是否确认退出登录',
+  }).then(() => {
+    store.delUser()
+    router.push('/login')
+  }).catch(() => {
+    return
+  })
+}
 </script>
 
 <template>
