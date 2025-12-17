@@ -3,9 +3,10 @@ import { useRouter } from 'vue-router';
 
 // import router from '@/router';
 
-  defineProps<{
+  const props = defineProps<{
     title?: string
     rightText?: string
+    back?: () => void
   }>()
 
   // const emit = defineEmits(['click-right'])
@@ -21,6 +22,7 @@ import { useRouter } from 'vue-router';
   // 点击左箭头
   const router = useRouter()
   const onClickLeft = () => {
+    if(props.back) return props.back()
     if(history.state?.back) {
       router.back()
     } else {
@@ -29,7 +31,13 @@ import { useRouter } from 'vue-router';
   }
 </script>
 <template>
-  <van-nav-bar @click-left="onClickLeft" @click-right="onClickRight" fixed :title="title" left-arrow :right-text="rightText" />
+  <van-nav-bar
+    @click-left="onClickLeft"
+    @click-right="onClickRight"
+    fixed :title="title"
+    left-arrow
+    :right-text="rightText"
+  />
 </template>
 <style lang="scss" scoped>
   :deep() {
