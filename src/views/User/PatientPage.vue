@@ -13,8 +13,13 @@ onMounted(() => {
   loadList()
 })
 
-// 计数器
-const count = ref(10)
+// 按钮的选项数据
+const options = [
+  { lable: '男', value: 1},
+  { lable: '女', value: 0}
+]
+// 选中的数据
+const gender = ref(1)
 </script>
 
 <template>
@@ -38,7 +43,10 @@ const count = ref(10)
       <div class="patient-tip">最多可添加 6 人</div>
       <!-- 测试代码 -->
       <!-- <cp-radio-btn :modelValue="count" @update:modelValue="count = $event"></cp-radio-btn> -->
-      <cp-radio-btn v-model:count="count"></cp-radio-btn>
+      <cp-radio-btn
+        v-model:options="options"
+        v-model="gender"
+      ></cp-radio-btn>
     </div>
   </div>
 </template>
