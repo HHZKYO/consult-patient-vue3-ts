@@ -38,7 +38,7 @@ const initPatient: Patient = {
 }
 const patient = ref<Patient>({ ...initPatient })
 const defaultFlag = computed({
-  get: () => (patient.value.defaultFlag === 1 ? 'true' : 'false'),
+  get: () => (patient.value.defaultFlag === 1 ? true : false),
   set: (value) => (patient.value.defaultFlag = value ? 1 : 0)
 })
 
