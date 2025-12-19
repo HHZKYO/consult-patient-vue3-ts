@@ -2,7 +2,7 @@
 import { getPatientList } from '@/services/user';
 import type { Patient, PatientList } from '@/types/user';
 import { idCardRules, nameRules } from '@/utils/rule';
-import type { FormInstance } from 'vant';
+import { showConfirmDialog, type FormInstance } from 'vant';
 import { computed, onMounted, ref } from 'vue';
 
 // 1. 页面初始化加载数据
@@ -47,7 +47,12 @@ const form = ref<FormInstance>()
 const onSubmit = async () => {
   // 表单项整体校验
   await form.value?.validate()
-  console.log('校验通过')
+  if ((+patient.value.idCard.slice(-2, -1) % 2) !== patient.value.gender) {
+    await showConfirmDialog({
+      title: '提示',
+      message: '性别选择不正确\n确认提交吗?'
+    })
+  }
 }
 </script>
 
