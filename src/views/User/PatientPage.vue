@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { getPatientList } from '@/services/user';
-import type { PatientList } from '@/types/user';
-import { onMounted, ref } from 'vue';
+import type { Patient, PatientList } from '@/types/user';
+import { computed, onMounted, ref } from 'vue';
 
 // 1. 页面初始化加载数据
 const list = ref<PatientList>([])
@@ -23,8 +23,22 @@ const options = [
 // 实现弹出层
 const showRight = ref(false)
 const showPopup = () => {
+  patient.value = { ...initPatient }
   showRight.value = true
 }
+
+// 添加患者的信息表单数据对象
+const initPatient: Patient = {
+  name: '',
+  idCard: '',
+  defaultFlag: 0,
+  gender: 1
+}
+const patient = ref<Patient>({ ...initPatient })
+const defaultFlag = computed({
+  get: () => (patient.value.defaultFlag === 1 ? 'true' : 'false'),
+  set: (value) => (patient.value.defaultFlag = value ? 1 : 0)
+})
 </script>
 
 <template>
@@ -58,17 +72,34 @@ const showPopup = () => {
         :back="()=>(showRight = false)"
       ></cp-nav-bar>
       <van-form autocomplete="off" ref="form">
-        <van-field label="真实姓名" placeholder="请输入真实姓名" />
-        <van-field label="身份证号" placeholder="请输入身份证号" />
-        <van-field label="性别" class="pb4">
+        <van-field
+          v-model="patient.name"
+          label="真实姓名"
+          placeholder="请输入真实姓名"
+        />
+        <van-field
+          v-model="patient.idCard"
+          label="身份证号"
+          placeholder="请输入身份证号"
+        />
+        <van-field
+          label="性别"
+          class="pb4"
+        >
           <!-- 单选按钮组件 -->
           <template #input>
-            <cp-radio-btn :options="options"></cp-radio-btn>
+            <cp-radio-btn
+              v-model="patient.gender"
+              :options="options">
+            </cp-radio-btn>
           </template>
         </van-field>
         <van-field label="默认就诊人">
           <template #input>
-            <van-checkbox :icon-size="18" round />
+            <van-checkbox
+              v-model="defaultFlag"
+              :icon-size="18" round
+            />
           </template>
         </van-field>
       </van-form>
