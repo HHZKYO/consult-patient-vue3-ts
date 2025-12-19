@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { addPatient, editPatient, getPatientList } from '@/services/user';
+import { addPatient, delPatient, editPatient, getPatientList } from '@/services/user';
 import type { Patient, PatientList } from '@/types/user';
 import { idCardRules, nameRules } from '@/utils/rule';
 import { showConfirmDialog, showSuccessToast, type FormInstance } from 'vant';
@@ -66,7 +66,26 @@ const onSubmit = async () => {
   }
   showRight.value = false
   loadList()
-  showSuccessToast(patient.value.id? '边界成功':'添加成功')
+  showSuccessToast(patient.value.id? '编辑成功':'添加成功')
+}
+
+// 删除患者
+const del = async () => {
+  if(patient.value.id){
+    const id = patient.value.id
+    try {
+      await showConfirmDialog({
+      title: '温馨提示',
+      message: '确认删除该患者信息吗？'
+      })
+      await delPatient(id)
+      showRight.value = false
+      loadList()
+      showSuccessToast('删除成功')
+    } catch {
+      return
+    }
+  }
 }
 </script>
 
@@ -137,6 +156,9 @@ const onSubmit = async () => {
           </template>
         </van-field>
       </van-form>
+      <van-action-bar v-if="patient.id">
+        <van-action-bar-button text="删除" @click="del" />
+      </van-action-bar>
     </van-popup>
   </div>
 </template>
@@ -151,6 +173,16 @@ const onSubmit = async () => {
       padding-top: 46px;
       box-sizing: border-box;
     }
+  }
+}
+
+// 底部操作栏
+.van-action-bar {
+  padding: 0 10px;
+  margin-bottom: 10px;
+  .van-button {
+    color: var(--cp-price);
+    background-color: var(--cp-bg);
   }
 }
 
