@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import knowledgeList from '@/views/Home/components/KnowledgeList.vue'
 
 const active = ref(1)
 </script>
@@ -80,10 +81,18 @@ const active = ref(1)
     </div>
     <!-- Tab栏 -->
     <van-tabs v-model:active="active" shrink sticky>
-      <van-tab title="关注">内容 1</van-tab>
-      <van-tab title="推荐">内容 2</van-tab>
-      <van-tab title="减脂">内容 3</van-tab>
-      <van-tab title="饮食">内容 4</van-tab>
+      <van-tab title="关注">
+        <knowledge-list></knowledge-list>
+      </van-tab>
+      <van-tab title="推荐">
+        <knowledge-list></knowledge-list>
+      </van-tab>
+      <van-tab title="减脂">
+        <knowledge-list></knowledge-list>
+      </van-tab>
+      <van-tab title="饮食">
+        <knowledge-list></knowledge-list>
+      </van-tab>
     </van-tabs>
   </div>
 </template>
