@@ -36,3 +36,8 @@ export const getPatientList = () => {
 export const addPatient = (patient: Patient) => {
   request('/patient/add', 'POST', patient)
 }
+
+// 编辑患者信息
+export const editPatient = (patient: Patient) => {
+  request('/patient/update', 'PUT', patient)
+}

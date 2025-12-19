@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { addPatient, getPatientList } from '@/services/user';
+import { addPatient, editPatient, getPatientList } from '@/services/user';
 import type { Patient, PatientList } from '@/types/user';
 import { idCardRules, nameRules } from '@/utils/rule';
 import { showConfirmDialog, showSuccessToast, type FormInstance } from 'vant';
@@ -24,8 +24,14 @@ const options = [
 // const gender = ref(1)
 // 实现弹出层
 const showRight = ref(false)
-const showPopup = () => {
-  patient.value = { ...initPatient }
+const showPopup = (item?: Patient) => {
+  if (item) {
+    const { id, name, idCard, gender, defaultFlag} = item
+    patient.value = { id, name, idCard, gender, defaultFlag}
+  } else {
+    form.value?.resetValidation()
+    patient.value = { ...initPatient }
+  }
   showRight.value = true
 }
 
@@ -53,10 +59,14 @@ const onSubmit = async () => {
       message: '性别选择不正确\n确认提交吗?'
     })
   }
-  addPatient(patient.value)
+  if (patient.value.id) {
+    await editPatient(patient.value)
+  } else {
+    await addPatient(patient.value)
+  }
   showRight.value = false
   loadList()
-  showSuccessToast('添加成功')
+  showSuccessToast(patient.value.id? '边界成功':'添加成功')
 }
 </script>
 
@@ -71,10 +81,12 @@ const onSubmit = async () => {
           <span>{{ item.genderValue }}</span>
           <span>{{ item.age }}岁</span>
         </div>
-        <div class="icon"><cp-icon name="user-edit" /></div>
+        <div class="icon" @click="showPopup(item)">
+          <cp-icon name="user-edit" />
+        </div>
         <div class="tag" v-if="item.defaultFlag ===1">默认</div>
       </div>
-      <div class="patient-add" v-if="list.length < 6" @click="showPopup">
+      <div class="patient-add" v-if="list.length < 6" @click="showPopup()">
         <cp-icon name="user-add" />
         <p>添加患者</p>
       </div>
@@ -86,7 +98,7 @@ const onSubmit = async () => {
       position="right"
     >
       <cp-nav-bar
-        title="添加患者"
+        :title="patient.id ? '编辑患者' : '添加患者'"
         right-text="保存"
         :back="()=>(showRight = false)"
         @click-right="onSubmit"
