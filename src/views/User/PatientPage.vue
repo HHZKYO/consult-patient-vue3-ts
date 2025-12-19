@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { getPatientList } from '@/services/user';
 import type { Patient, PatientList } from '@/types/user';
+import { idCardRules, nameRules } from '@/utils/rule';
+import type { FormInstance } from 'vant';
 import { computed, onMounted, ref } from 'vue';
 
 // 1. 页面初始化加载数据
@@ -39,6 +41,14 @@ const defaultFlag = computed({
   get: () => (patient.value.defaultFlag === 1 ? 'true' : 'false'),
   set: (value) => (patient.value.defaultFlag = value ? 1 : 0)
 })
+
+// 保存提交表单
+const form = ref<FormInstance>()
+const onSubmit = async () => {
+  // 表单项整体校验
+  await form.value?.validate()
+  console.log('校验通过')
+}
 </script>
 
 <template>
@@ -70,17 +80,20 @@ const defaultFlag = computed({
         title="添加患者"
         right-text="保存"
         :back="()=>(showRight = false)"
+        @click-right="onSubmit"
       ></cp-nav-bar>
       <van-form autocomplete="off" ref="form">
         <van-field
           v-model="patient.name"
           label="真实姓名"
           placeholder="请输入真实姓名"
+          :rules="nameRules"
         />
         <van-field
           v-model="patient.idCard"
           label="身份证号"
           placeholder="请输入身份证号"
+          :rules="idCardRules"
         />
         <van-field
           label="性别"
