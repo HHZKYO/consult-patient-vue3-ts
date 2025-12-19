@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { getPatientList } from '@/services/user';
+import { addPatient, getPatientList } from '@/services/user';
 import type { Patient, PatientList } from '@/types/user';
 import { idCardRules, nameRules } from '@/utils/rule';
-import { showConfirmDialog, type FormInstance } from 'vant';
+import { showConfirmDialog, showSuccessToast, type FormInstance } from 'vant';
 import { computed, onMounted, ref } from 'vue';
 
 // 1. 页面初始化加载数据
@@ -53,6 +53,10 @@ const onSubmit = async () => {
       message: '性别选择不正确\n确认提交吗?'
     })
   }
+  addPatient(patient.value)
+  showRight.value = false
+  loadList()
+  showSuccessToast('添加成功')
 }
 </script>
 
