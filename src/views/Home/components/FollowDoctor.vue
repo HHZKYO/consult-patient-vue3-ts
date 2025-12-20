@@ -1,8 +1,20 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue';
 import DoctorCard from './DoctorCard.vue';
 import { useWindowSize } from '@vueuse/core'
+import type { DoctorList } from '@/types/consult';
+import { getDoctorPageAPI } from '@/services/consult';
 
 const { width } = useWindowSize()
+
+const list = ref<DoctorList>([])
+const getDoctorPage = async () => {
+  const res = await getDoctorPageAPI({current: 1, pageSize: 5})
+  list.value.push(...res.data.rows)
+}
+onMounted(() => {
+  getDoctorPage()
+})
 
 // 使用原生js来实现宽度适配
 // import { onMounted, onUnmounted, ref } from 'vue';
@@ -32,8 +44,8 @@ const { width } = useWindowSize()
         :show-indicators="false"
         :width="( 150 / 375 ) * width"
       >
-        <van-swipe-item v-for="i in 5" :key="i">
-          <doctor-card></doctor-card>
+        <van-swipe-item v-for="item in list" :key="item.id">
+          <doctor-card :item="item"></doctor-card>
         </van-swipe-item>
       </van-swipe>
     </div>
