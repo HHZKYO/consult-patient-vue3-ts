@@ -7,47 +7,47 @@ defineProps<{
 </script>
 
 <template>
-    <div class="knowledge-card van-hairline--bottom">
-      <div class="head">
-        <van-image
-          round
-          class="avatar"
-          :src="item.creatorAvatar"
-        ></van-image>
-        <div class="info">
-          <p class="name">{{ item.creatorName }}</p>
-          <p class="dep van-ellipsis">
-            {{ item.creatorHospatalName }}
-            {{ item.creatorDep }}
-            {{ item.creatorTitles }}
-          </p>
-        </div>
-        <van-button class="btn" size="small" round>
-          {{ item.likeFlag === 0 ? '+ 关注' : '已关注' }}
-        </van-button>
-      </div>
-      <div class="body">
-        <h3 class="title van-ellipsis">{{ item.title }}</h3>
-        <p class="tag" v-for="(tag, i) in item.topics" :key="i">
-          <span># {{ tag }}</span>
-        </p>
-        <p class="intro van-multi-ellipsis--l2">
-          {{ item.content.replace(/<[^>]+>/g, '') }}
-        </p>
-        <div class="imgs" :class="{ large: item.coverUrl.length === 1 }">
-          <van-image
-            fit="cover"
-            v-for="(url, i) in item.coverUrl"
-            :key="i"
-            :src="url"
-          />
-        </div>
-        <p class="logs">
-          <span>{{ item.collectionNumber }} 收藏</span>
-          <span>{{ item.commentNumber }} 评论</span>
+  <div class="knowledge-card van-hairline--bottom">
+    <div class="head">
+      <van-image
+        round
+        class="avatar"
+        :src="item.creatorAvatar"
+      ></van-image>
+      <div class="info">
+        <p class="name">{{ item.creatorName }}</p>
+        <p class="dep van-ellipsis">
+          {{ item.creatorHospatalName }}
+          {{ item.creatorDep }}
+          {{ item.creatorTitles }}
         </p>
       </div>
+      <van-button class="btn" size="small" round>
+        {{ item.likeFlag === 0 ? '+ 关注' : '已关注' }}
+      </van-button>
     </div>
+    <div class="body">
+      <h3 class="title van-ellipsis">{{ item.title }}</h3>
+      <p class="tag" v-for="(tag, i) in item.topics" :key="i">
+        <span># {{ tag }}</span>
+      </p>
+      <p class="intro van-multi-ellipsis--l2">
+        {{ item.content.replace(/<[^>]+>/g, '') }}
+      </p>
+      <div class="imgs" :class="{ large: item.coverUrl.length === 1 }">
+        <van-image
+          fit="cover"
+          v-for="(url, i) in item.coverUrl"
+          :key="i"
+          :src="url"
+        />
+      </div>
+      <p class="logs">
+        <span>{{ item.collectionNumber }} 收藏</span>
+        <span>{{ item.commentNumber }} 评论</span>
+      </p>
+    </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>

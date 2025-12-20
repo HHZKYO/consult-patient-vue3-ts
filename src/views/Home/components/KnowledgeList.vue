@@ -18,7 +18,6 @@ const params = ref<KnowledgeParams>({
 })
 const list = ref<KnowledgeList>([])
 const onLoad = async () => {
-  console.log('a')
   const res = await getKnowledgePage(params.value)
   list.value.push(...res.data.rows)
   // 判断是否加载完成
@@ -31,21 +30,21 @@ const onLoad = async () => {
 }
 </script>
 
-  <template>
-    <div class="knowledge-list">
-      <van-list
-        v-model:loading="loading"
-        :finished="finished"
-        finished-text="没有更多了"
-        @load="onLoad"
-      >
-        <knowledge-card v-for="item in list" :key="item.id" :item="item"></knowledge-card>
-      </van-list>
-    </div>
-  </template>
+<template>
+  <div class="knowledge-list">
+    <van-list
+      v-model:loading="loading"
+      :finished="finished"
+      finished-text="没有更多了"
+      @load="onLoad"
+    >
+      <knowledge-card v-for="item in list" :key="item.id" :item="item"></knowledge-card>
+    </van-list>
+  </div>
+</template>
 
-  <style lang="scss" scoped>
-  .knowledge-list {
-    padding: 0 15px;
-  }
-  </style>
+<style lang="scss" scoped>
+.knowledge-list {
+  padding: 0 15px;
+}
+</style>
