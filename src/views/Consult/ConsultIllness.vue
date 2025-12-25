@@ -3,9 +3,9 @@
 import { IllnessTime } from '@/enums';
 import { uploadImage } from '@/services/consult';
 import { useConsultStore } from '@/stores';
-import type { ConsultIllness } from '@/types/consult';
-import { showToast, type UploaderAfterRead, type UploaderFileListItem } from 'vant';
-import { computed, ref } from 'vue';
+import type { ConsultIllness, Image } from '@/types/consult';
+import { showConfirmDialog, showToast, type UploaderAfterRead, type UploaderFileListItem } from 'vant';
+import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 // 选项数据
@@ -28,7 +28,7 @@ const form = ref<ConsultIllness>({
 })
 
 // 用于图片的预览
-const fileList = ref([])
+const fileList = ref<Image[]>([])
 // 文件读取完之后的回调函数，上传图片
 const onAfterRead: UploaderAfterRead = (item) => {
   if (Array.isArray(item)) return
@@ -69,6 +69,22 @@ const next = () => {
   // 跳转，携带标识
   router.push('/user/patient?isChange=1')
 }
+
+// 数据回显
+onMounted(() => {
+  if(store.consult.illnessDesc) {
+    showConfirmDialog({
+      title: '温馨提示',
+      message: '是否恢复您之前填写的信息?',
+      closeOnPopstate: false
+    }).then(() => {
+      const { illnessDesc, illnessTime, consultFlag, pictures } = store.consult
+      form.value = { illnessDesc, illnessTime, consultFlag, pictures }
+      // 图片回显
+      fileList.value = pictures || []
+    })
+  }
+})
 </script>
 
 <template>
