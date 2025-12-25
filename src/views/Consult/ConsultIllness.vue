@@ -134,7 +134,15 @@ onMounted(() => {
         <p class="tip" v-if="!fileList.length" >上传内容仅医生可见,最多9张图,最大5MB</p>
       </div>
       <!-- 下一步 -->
-      <van-button :class={disabled} type="primary" round block @click="next">下一步</van-button>
+      <van-button
+        :class={disabled}
+        type="primary"
+        round
+        block
+        @click="next"
+      >
+        下一步
+      </van-button>
     </div>
   </div>
 </template>
