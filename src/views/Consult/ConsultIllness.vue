@@ -1,7 +1,9 @@
 
 <script setup lang="ts">
 import { IllnessTime } from '@/enums';
+import { uploadImage } from '@/services/consult';
 import type { ConsultIllness } from '@/types/consult';
+import type { UploaderAfterRead, UploaderFileListItem } from 'vant';
 import { ref } from 'vue';
 
 // 选项数据
@@ -23,15 +25,30 @@ const form = ref<ConsultIllness>({
   pictures: []
 })
 
-// 上传图片
+// 用于图片的预览
 const fileList = ref([])
-// 文件读取完之后的回调函数
-const onAfterRead = () => {
-  console.log('a')
+// 文件读取完之后的回调函数，上传图片
+const onAfterRead: UploaderAfterRead = (item) => {
+  if (Array.isArray(item)) return
+  if (!item.file) return
+  item.status = 'uploading'
+  item.message = '...上传中'
+  uploadImage(item.file)
+    .then((res) => {
+      item.status = 'done'
+      item.message = undefined
+      item.url = res.data.url
+      // 同步数据至表单
+      form.value.pictures?.push(res.data)
+    })
+    .catch(() => {
+      item.status = 'failed'
+      item.message = '上传失败'
+    })
 }
 // 删除文件预览时触发
-const onDeleteImg = () => {
-  console.log('b')
+const onDeleteImg = (item: UploaderFileListItem) => {
+  form.value.pictures = form.value.pictures?.filter((pic) => { return pic.url !== item.url })
 }
 </script>
 
