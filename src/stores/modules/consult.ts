@@ -23,8 +23,9 @@ export const useConsultStore = defineStore(
       consult.value.consultFlag = item.consultFlag
       consult.value.pictures = item.pictures
     }
-
-    return { consult, setType, setIllnessType, setDep, setIllness }
+    // 记录患者
+    const setPatient = (id: string) => (consult.value.patientId = id)
+    return { consult, setType, setIllnessType, setDep, setIllness, setPatient }
   },
   { persist: true }
 )
