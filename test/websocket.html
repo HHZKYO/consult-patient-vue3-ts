@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <button class="btn1">连接</button>
+  <button class="btn2">关闭</button>
+  <script>
+    // 1、建立连接
+    const ws = new WebSocket('wss://javascript.info/article/websocket/demo/hello')
+    // 2、监听连接成功
+    ws.onopen = () => {
+      console.log('连接成功')
+    }
+    // 3、如何发送消息
+    document.querySelector('.btn1').onclick = () => {
+      ws.send('Hello WebSocket')
+      console.log('消息已发送')
+    }
+    // 4、如何接收消息
+    ws.onmessage = (event) => {
+      console.log('收到消息：', event.data)
+    }
+    // 5、如何主动关闭连接
+    document.querySelector('.btn2').onclick = () => {
+      ws.close()
+    }
+    // 6、监听通信关闭
+    ws.onclose = () => {
+      console.log('连接已关闭')
+    }
+  </script>
+</body>
+
+</html>
